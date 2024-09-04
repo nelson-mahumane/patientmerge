@@ -14,23 +14,35 @@ public class MergeIm implements Merge{
 	
 	public List<Patient> mergeForOne(Patient patient, List<Patient> patients){		
 		List<Patient> mergedPatients=new ArrayList<>();
+		mergedPatients.add(patient);
 		
 		for(Patient patientList: patients) {
 			
-		if(ProbabilityCalculator.calc(patient,patientList)>AVERAGE)
+		if(ProbabilityCalculator.calc(patient,patientList)>AVERAGE) {
 			patientList.setGoldenId(patient.getId());
 			mergedPatients.add(patientList);
-			
+		}
 		}
 				
 		return mergedPatients;
 	}
 	
 	public List<Patient> mergeForAll(List<Patient> patients){
+		List<Patient> mergedPatients=new ArrayList<>();
 		
+		for (Patient patient1 : patients) {
+			
+			for (Patient patient2 : patients) {
+				
+				if(ProbabilityCalculator.calc(patient1, patient2)>AVERAGE && !mergedPatients.contains(patient2)) {
+					patient2.setGoldenId(patient1.getId());	
+				mergedPatients.add(patient2);
+				}
+			}
+			
+		}
+			
 		
-		
-		return new ArrayList();
-
+		return mergedPatients;
 }
 }
